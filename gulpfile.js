@@ -29,7 +29,7 @@ const paths = {
     dest: "./css/"
   },
   scripts: {
-    src: ["./js/*.js", "./js/libs/*.js", "!./js/min/*.js"],
+    src: ["./js/*.js", "./js/libs/*.js", "./js/modules/*.js", "!./js/min/*.js"],
     dest: "./js/min"
   },
   svg: {
@@ -114,8 +114,9 @@ function preprocessJs() {
 function concatJs() {
   return gulp
     .src([
+      //
       "js/libs/*.js",
-      //"js/libs/jquery.lazy.js",
+      "js/modules/*.js",
       //"js/libs/jquery.fitvids.js",
       //"js/libs/jquery.resizable.js",
       // "js/babel/highlighting-fixes.js",
