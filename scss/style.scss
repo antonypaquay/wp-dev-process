@@ -1,0 +1,14 @@
+/*--- TEMPLATES ---*/
+@import "./templates/header.scss";
+
+/*--- COMPONENTS ---*/
+@import "./components/button.scss";
+
+/*--- CONFIGURATION ---*/
+// use _file-name to exclude
+@import "./settings/base";
+@import "./settings/sitesettings";
+@import "./settings/mixins";
+@import "./settings/breakpoints";
+@import "./tools/normalize";
+@import "./tools/reset";
