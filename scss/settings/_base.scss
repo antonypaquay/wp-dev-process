@@ -4,17 +4,17 @@
 
 body {
   text-align: center;
-  h1, p {
+  h1,
+  p {
     margin: 0;
   }
 }
 
 .container {
   width: 100%;
-  height: calc(80vh - 16px);
-  background-color: #F2F3F3;
-  margin: 8px 0px;
+  padding: 160px 0px;
   position: relative;
+  background-color: ffffff;
   &__block {
     @extend .centerxy;
   }

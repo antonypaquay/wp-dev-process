@@ -1,6 +1,13 @@
 header {
-    background-color: #F2F3F3;
+  background-color: #f2f3f3;
+  width: 100%;
+  .header__cover {
     width: 100%;
-    height: 10vh;
- 
+    height: 65vh;
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
