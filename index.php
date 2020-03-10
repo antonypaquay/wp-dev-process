@@ -1,10 +1,15 @@
-<?php include'header.php' ?>
+<?php include './includes/head.php'?>
 
-    <header>
-        <p>header</p>
-    </header>
+    <?php include './templates/header.php'?>
 
-    <h1>Hello world!</h1>
-    <button>Click me!</button>
+    <div class="container">
+        <div class="container__block">
+            <h1>WP Dev process</h1>
+            <button>Click me!</button>
+            <button>Click me!</button>
+        </div>
+    </div>
 
-<?php include'footer.php' ?>
+    <?php include './templates/footer.php'?>
+
+<?php include './includes/end.php'?>

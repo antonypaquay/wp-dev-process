@@ -4,4 +4,18 @@
 
 body {
   text-align: center;
+  h1, p {
+    margin: 0;
+  }
+}
+
+.container {
+  width: 100%;
+  height: calc(80vh - 16px);
+  background-color: #F2F3F3;
+  margin: 8px 0px;
+  position: relative;
+  &__block {
+    @extend .centerxy;
+  }
 }

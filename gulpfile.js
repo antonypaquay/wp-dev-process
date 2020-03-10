@@ -13,8 +13,14 @@ const gulp = require("gulp"),
   svgSymbols = require("gulp-svg-symbols"),
   svgmin = require("gulp-svgmin");
 
+// Cache controls
+const clearHeadCache = false;
+const clearScriptsCache = true;
+
+// Local server
 const ENVLOCAL = "http://localhost/";
 
+// Dest paths
 const paths = {
   styles: {
     src: ["./scss/*.scss", "./scss/**/*.scss"],
@@ -43,7 +49,9 @@ const paths = {
 /* STYLES */
 function doStyles(done) {
   return gulp.series(style, moveMainStyle, deleteOldMainStyle, done => {
-    cacheBust("./header.php", "./");
+    if(clearHeadCache){
+      cacheBust("./includes/head.php", "./");
+    }
     done();
   })(done);
 }
@@ -76,7 +84,9 @@ function doScripts(done) {
     deleteArtifactJs,
     reload,
     done => {
-      cacheBust("./includes/footer-scripts.php", "./includes/");
+      if(clearScriptsCache){
+        cacheBust("./includes/footer-scripts.php", "./includes/");
+      }
       done();
     }
   )(done);
