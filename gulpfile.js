@@ -7,6 +7,8 @@ const gulp = require("gulp"),
   del = require("del"),
   babel = require("gulp-babel"),
   minify = require("gulp-minify"),
+  notify = require("gulp-notify"),
+  uglify = require("gulp-uglify"),
   concat = require("gulp-concat"),
   rename = require("gulp-rename"),
   replace = require("gulp-replace"),
@@ -49,7 +51,7 @@ const paths = {
 /* STYLES */
 function doStyles(done) {
   return gulp.series(style, moveMainStyle, deleteOldMainStyle, done => {
-    if(clearHeadCache){
+    if (clearHeadCache) {
       cacheBust("./includes/head.php", "./");
     }
     done();
@@ -60,7 +62,12 @@ function style() {
   return gulp
     .src(paths.styles.src)
     .pipe(sass())
-    .on("error", sass.logError)
+    .on("error", function(err) {
+      notify({
+        title: "Wow !! You have a CSS Bug !"
+      }).write(err.line + ": " + err.message);
+      return this.emit("end");
+    })
     .pipe(postcss([autoprefixer(), cssnano()]))
     .pipe(gulp.dest(paths.styles.dest))
     .pipe(browserSync.stream());
@@ -84,7 +91,7 @@ function doScripts(done) {
     deleteArtifactJs,
     reload,
     done => {
-      if(clearScriptsCache){
+      if (clearScriptsCache) {
         cacheBust("./includes/footer-scripts.php", "./includes/");
       }
       done();
@@ -107,14 +114,22 @@ function preprocessJs() {
 function concatJs() {
   return gulp
     .src([
-      //"js/libs/*.js",
+      "js/libs/*.js",
+      //"js/libs/jquery.lazy.js",
       //"js/libs/jquery.fitvids.js",
       //"js/libs/jquery.resizable.js",
-      // "js/libs/prism.js",
       // "js/babel/highlighting-fixes.js",
       "js/babel/app.js"
     ])
     .pipe(concat("app-concat.js"))
+    .pipe(
+      uglify().on("error", function(err) {
+        notify({
+          title: "Wow !! You have a Javascript bug !"
+        }).write(err.line + ": " + err.message);
+        return this.emit("end");
+      })
+    )
     .pipe(gulp.dest("./js/concat/"));
 }
 
