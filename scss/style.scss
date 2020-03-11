@@ -1,16 +1,15 @@
 /*--- CONFIGURATION ---*/
-// use _file-name to exclude
-@import "./tools/normalize";
-@import "./tools/reset";
-@import "./settings/mixins";
-@import "./settings/breakpoints";
-@import "./settings/sitesettings";
-@import "./settings/base";
+@import "tools/normalize";
+@import "tools/reset";
+@import "settings/mixins";
+@import "settings/breakpoints";
+@import "settings/sitesettings";
+@import "settings/base";
 
 /*--- TEMPLATES ---*/
-@import "./templates/header.scss";
-@import "./templates/footer.scss";
-@import "./templates/navigation.scss";
+@import "templates/header.scss";
+@import "templates/footer.scss";
+@import "templates/navigation.scss";
 
 /*--- COMPONENTS ---*/
-@import "./components/button.scss";
+@import "components/button.scss";

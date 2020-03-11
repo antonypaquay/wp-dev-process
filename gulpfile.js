@@ -9,24 +9,21 @@ const gulp = require("gulp"),
   minify = require("gulp-minify"),
   notify = require("gulp-notify"),
   uglify = require("gulp-uglify"),
+  sourcemaps = require("gulp-sourcemaps"),
   concat = require("gulp-concat"),
   rename = require("gulp-rename"),
   replace = require("gulp-replace"),
   svgSymbols = require("gulp-svg-symbols"),
   svgmin = require("gulp-svgmin");
 
-// Cache controls
-const clearHeadCache = false;
-const clearScriptsCache = true;
-
 // Local server
-const ENVLOCAL = "http://localhost/";
+const proxy = "http://localhost/";
 
 // Dest paths
 const paths = {
   styles: {
-    src: ["./scss/*.scss", "./scss/**/*.scss"],
-    dest: "./css/"
+    src: "scss/**/*.scss",
+    dest: "./"
   },
   scripts: {
     src: ["./js/*.js", "./js/libs/*.js", "./js/modules/*.js", "!./js/min/*.js"],
@@ -50,10 +47,8 @@ const paths = {
 
 /* STYLES */
 function doStyles(done) {
-  return gulp.series(style, moveMainStyle, deleteOldMainStyle, done => {
-    if (clearHeadCache) {
-      cacheBust("./includes/head.php", "./");
-    }
+  return gulp.series(style, done => {
+    cacheBust("./");
     done();
   })(done);
 }
@@ -61,6 +56,7 @@ function doStyles(done) {
 function style() {
   return gulp
     .src(paths.styles.src)
+    .pipe(sourcemaps.init())
     .pipe(sass())
     .on("error", function(err) {
       notify({
@@ -69,17 +65,11 @@ function style() {
       return this.emit("end");
     })
     .pipe(postcss([autoprefixer(), cssnano()]))
+    .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest(paths.styles.dest))
     .pipe(browserSync.stream());
 }
 
-function moveMainStyle() {
-  return gulp.src("./css/style.css").pipe(gulp.dest("./"));
-}
-
-function deleteOldMainStyle() {
-  return del("./css/style.css");
-}
 /* END STYLES */
 
 /* SCRIPTS */
@@ -89,11 +79,10 @@ function doScripts(done) {
     concatJs,
     minifyJs,
     deleteArtifactJs,
+    moveOptimizedScript,
     reload,
     done => {
-      if (clearScriptsCache) {
-        cacheBust("./includes/footer-scripts.php", "./includes/");
-      }
+      cacheBust("./");
       done();
     }
   )(done);
@@ -156,6 +145,14 @@ function deleteArtifactJs() {
     "!./js/min/*.min.js"
   ]);
 }
+
+function moveOptimizedScript() {
+  return gulp
+    .src("./js/min/app-concat.min.js")
+    .pipe(rename("bundle.min.js"))
+    .pipe(gulp.dest("./"));
+}
+
 /* END SCRIPTS */
 
 /* SVG */
@@ -198,7 +195,7 @@ function reload(done) {
 
 function watch() {
   browserSync.init({
-    proxy: ENVLOCAL
+    proxy: proxy
   });
   gulp.watch(paths.styles.src, doStyles);
   gulp.watch(paths.scripts.src, doScripts);

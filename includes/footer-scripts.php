@@ -1,1 +1,1 @@
-<script src="./js/min/app-concat.min.js"></script>
+<script src="./bundle.min.js"></script>
