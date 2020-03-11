@@ -48,7 +48,7 @@ const paths = {
 /* STYLES */
 function doStyles(done) {
   return gulp.series(style, done => {
-    cacheBust("./");
+    cacheBust("./style.css", "./");
     done();
   })(done);
 }
@@ -82,7 +82,7 @@ function doScripts(done) {
     moveOptimizedScript,
     reload,
     done => {
-      cacheBust("./");
+      cacheBust("./bundle.min.js", "./");
       done();
     }
   )(done);
